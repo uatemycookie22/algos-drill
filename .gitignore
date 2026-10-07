@@ -1,0 +1,13 @@
+# Local Python artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Personal drill state and archived implementations
+.drill_progress.json
+solutions/
+
+# Local editor settings
+.vscode/
