@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Interactive lessons for building cold recall of algorithms and data structures."
+    />
+    <title>Algo Drill Lab — Quickselect</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div>
+            <p class="eyebrow">Cold recall</p>
+            <h1>Algo Drill Lab</h1>
+          </div>
+        </div>
+
+        <nav aria-label="Lesson navigation">
+          <div id="curriculum"></div>
+        </nav>
+
+        <div class="sidebar-note">
+          <span class="status-dot"></span>
+          <div>
+            <strong>1 lesson ready</strong>
+            <p>The curriculum grows with the repo.</p>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button
+            class="icon-button menu-button"
+            id="menu-button"
+            type="button"
+            aria-label="Open lesson navigation"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <div class="breadcrumb">
+            <span>Searching &amp; selection</span>
+            <span aria-hidden="true">/</span>
+            <strong>Quickselect</strong>
+          </div>
+          <div class="mode-pill">
+            <span aria-hidden="true">⌁</span>
+            Interactive lesson
+          </div>
+        </header>
+
+        <article id="lesson-root">
+          <section class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow accent">Selection algorithm · Tier 1</p>
+              <h2>Find one sorted position.<br />Ignore everything else.</h2>
+              <p class="hero-lede">
+                Quickselect finds the <em>k</em>-th smallest value by repeatedly
+                putting one pivot in its final position, then keeping only the
+                side that can contain the answer.
+              </p>
+              <div class="hero-actions">
+                <a class="button primary" href="#visualizer">Run the visualizer</a>
+                <a class="button ghost" href="#mental-model">Build the mental model</a>
+              </div>
+            </div>
+
+            <div class="hero-card" aria-label="Quickselect at a glance">
+              <div class="hero-card-top">
+                <span>Target</span>
+                <strong>k = 3</strong>
+              </div>
+              <div class="mini-array" aria-hidden="true">
+                <span>3</span><span>1</span><span>5</span><span>2</span><span>4</span>
+              </div>
+              <div class="partition-line">
+                <span class="left-zone">smaller</span>
+                <span class="pivot-zone">pivot</span>
+                <span class="right-zone">larger</span>
+              </div>
+              <div class="hero-card-result">
+                <span>Sorted position 2</span>
+                <strong>Answer: 3</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="lesson-section" id="mental-model">
+            <div class="section-heading">
+              <p class="eyebrow">01 · Mental model</p>
+              <h3>Quicksort’s focused cousin</h3>
+              <p>
+                A full sort organizes every value. Quickselect asks which side
+                contains one target index and abandons the other side.
+              </p>
+            </div>
+
+            <div class="idea-grid">
+              <div class="idea-card">
+                <span class="idea-number">1</span>
+                <h4>Choose a pivot</h4>
+                <p>Any value can be the pivot. This lesson uses the last value.</p>
+              </div>
+              <div class="idea-card">
+                <span class="idea-number">2</span>
+                <h4>Partition</h4>
+                <p>Move smaller values left, then place the pivot between both sides.</p>
+              </div>
+              <div class="idea-card">
+                <span class="idea-number">3</span>
+                <h4>Compare positions</h4>
+                <p>Compare the pivot index with <code>k - 1</code>, the target index.</p>
+              </div>
+              <div class="idea-card">
+                <span class="idea-number">4</span>
+                <h4>Discard one side</h4>
+                <p>Continue only where the target index can still exist.</p>
+              </div>
+            </div>
+
+            <div class="contract-card">
+              <div>
+                <p class="eyebrow">The partition contract</p>
+                <h4>After partition returns <code>p</code>:</h4>
+              </div>
+              <div class="contract-array" aria-label="Partition contract">
+                <span class="contract-less">values &lt; pivot</span>
+                <span class="contract-pivot">pivot at p</span>
+                <span class="contract-more">values ≥ pivot</span>
+              </div>
+              <p>
+                The sides are not fully sorted. The pivot alone is guaranteed
+                to be at its final sorted index.
+              </p>
+            </div>
+          </section>
+
+          <section class="lesson-section visualizer-section" id="visualizer">
+            <div class="section-heading split-heading">
+              <div>
+                <p class="eyebrow">02 · See it happen</p>
+                <h3>Walk through every decision</h3>
+              </div>
+              <p>
+                Watch the scan boundary, pivot, active search range, and target
+                index change one operation at a time.
+              </p>
+            </div>
+
+            <div class="visualizer">
+              <div class="input-panel">
+                <label for="array-input">Numbers</label>
+                <input
+                  id="array-input"
+                  type="text"
+                  value="3, 1, 5, 2, 4"
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+
+                <label for="k-input">k-th smallest</label>
+                <div class="number-input-row">
+                  <input id="k-input" type="number" value="3" min="1" />
+                  <button class="button primary compact" id="build-button" type="button">
+                    Build trace
+                  </button>
+                </div>
+                <p class="input-error" id="input-error" role="alert"></p>
+
+                <div class="variable-grid" id="variable-grid" aria-live="polite"></div>
+
+                <div class="legend">
+                  <span><i class="legend-target"></i>target index</span>
+                  <span><i class="legend-pivot"></i>pivot</span>
+                  <span><i class="legend-scan"></i>scan j</span>
+                  <span><i class="legend-boundary"></i>boundary i</span>
+                  <span><i class="legend-discarded"></i>discarded</span>
+                </div>
+              </div>
+
+              <div class="stage-panel">
+                <div class="stage-toolbar">
+                  <div>
+                    <span class="step-count" id="step-count">Step 1 of 1</span>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                  </div>
+                  <button class="text-button" id="restart-button" type="button">↺ Restart</button>
+                </div>
+
+                <div class="array-stage" id="array-stage" aria-live="polite"></div>
+
+                <div class="step-explanation">
+                  <span class="step-kind" id="step-kind">Start</span>
+                  <p id="step-message"></p>
+                </div>
+
+                <div class="visualizer-controls">
+                  <button class="control-button" id="previous-button" type="button">
+                    <span aria-hidden="true">←</span> Previous
+                  </button>
+                  <button class="control-button play-button" id="play-button" type="button">
+                    <span id="play-icon" aria-hidden="true">▶</span>
+                    <span id="play-label">Play</span>
+                  </button>
+                  <button class="control-button" id="next-button" type="button">
+                    Next <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="lesson-section">
+            <div class="section-heading">
+              <p class="eyebrow">03 · Encode the pattern</p>
+              <h3>Two loops, two responsibilities</h3>
+              <p>
+                The inner loop partitions one range. The outer loop decides
+                which range survives.
+              </p>
+            </div>
+
+            <div class="code-layout">
+              <div class="code-notes">
+                <button class="code-note active" type="button" data-lines="3-10">
+                  <span>Partition</span>
+                  <p>Grow a region containing values smaller than the pivot.</p>
+                </button>
+                <button class="code-note" type="button" data-lines="15-23">
+                  <span>Select</span>
+                  <p>Compare the pivot position with the target position.</p>
+                </button>
+                <button class="code-note" type="button" data-lines="13">
+                  <span>Translate k</span>
+                  <p>The problem uses 1-based k; array indices are 0-based.</p>
+                </button>
+              </div>
+
+              <div class="code-card">
+                <div class="code-header">
+                  <span>quickselect.py</span>
+                  <button class="text-button" id="reveal-code-button" type="button">
+                    Reveal implementation
+                  </button>
+                </div>
+                <div class="code-cover" id="code-cover">
+                  <div>
+                    <span aria-hidden="true">◉</span>
+                    <strong>Recall mode</strong>
+                    <p>Say the partition contract out loud before revealing the code.</p>
+                  </div>
+                </div>
+                <pre id="code-block" aria-label="Quickselect Python implementation"><code><span data-line="1">def quickselect(nums, k):</span>
+<span data-line="2">    nums = list(nums)</span>
+<span data-line="3">    def partition(lo, hi):</span>
+<span data-line="4">        pivot = nums[hi]</span>
+<span data-line="5">        i = lo</span>
+<span data-line="6">        for j in range(lo, hi):</span>
+<span data-line="7">            if nums[j] &lt; pivot:</span>
+<span data-line="8">                nums[i], nums[j] = nums[j], nums[i]</span>
+<span data-line="9">                i += 1</span>
+<span data-line="10">        nums[i], nums[hi] = nums[hi], nums[i]</span>
+<span data-line="11">        return i</span>
+<span data-line="12"></span>
+<span data-line="13">    target = k - 1</span>
+<span data-line="14">    lo, hi = 0, len(nums) - 1</span>
+<span data-line="15">    while lo &lt;= hi:</span>
+<span data-line="16">        p = partition(lo, hi)</span>
+<span data-line="17">        if p == target:</span>
+<span data-line="18">            return nums[p]</span>
+<span data-line="19">        if p &lt; target:</span>
+<span data-line="20">            lo = p + 1</span>
+<span data-line="21">        else:</span>
+<span data-line="22">            hi = p - 1</span>
+<span data-line="23">    return None</span></code></pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="lesson-section">
+            <div class="section-heading">
+              <p class="eyebrow">04 · Know the cost</p>
+              <h3>Why the average is linear</h3>
+            </div>
+
+            <div class="complexity-grid">
+              <div class="complexity-card featured">
+                <span>Average time</span>
+                <strong>O(n)</strong>
+                <p>
+                  Each partition scans its active range, but only one side
+                  survives. The work resembles n + n/2 + n/4 + …
+                </p>
+              </div>
+              <div class="complexity-card">
+                <span>Worst time</span>
+                <strong>O(n²)</strong>
+                <p>
+                  Consistently choosing an extreme pivot can shrink the range
+                  by only one value per round.
+                </p>
+              </div>
+              <div class="complexity-card">
+                <span>Extra space</span>
+                <strong>O(1)</strong>
+                <p>
+                  Partitioning can happen in place. Copying the input first
+                  changes this implementation to O(n) extra space.
+                </p>
+              </div>
+            </div>
+
+            <div class="comparison-table" role="table" aria-label="Algorithm comparison">
+              <div class="table-row table-head" role="row">
+                <span role="columnheader">Approach</span>
+                <span role="columnheader">Typical time</span>
+                <span role="columnheader">What it computes</span>
+              </div>
+              <div class="table-row" role="row">
+                <strong role="cell">Sort then index</strong>
+                <span role="cell">O(n log n)</span>
+                <span role="cell">Every sorted position</span>
+              </div>
+              <div class="table-row selected" role="row">
+                <strong role="cell">Quickselect</strong>
+                <span role="cell">O(n) average</span>
+                <span role="cell">One sorted position</span>
+              </div>
+              <div class="table-row" role="row">
+                <strong role="cell">Heap of size k</strong>
+                <span role="cell">O(n log k)</span>
+                <span role="cell">Useful for streaming data</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="lesson-section">
+            <div class="section-heading">
+              <p class="eyebrow">05 · Check your model</p>
+              <h3>Three quick questions</h3>
+            </div>
+            <div class="quiz-grid" id="quiz-grid"></div>
+          </section>
+
+          <section class="lesson-section practice-section">
+            <div>
+              <p class="eyebrow accent">Ready for cold recall?</p>
+              <h3>Close this page. Write it from memory.</h3>
+              <p>
+                Keep three anchors: partition contract, <code>target = k - 1</code>,
+                and pivot-index comparison.
+              </p>
+            </div>
+            <div class="practice-command">
+              <span>Run the focused test</span>
+              <code>python3 -m pytest -k quickselect</code>
+              <button class="copy-button" id="copy-command" type="button">Copy</button>
+            </div>
+          </section>
+        </article>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./js/lessons.js"></script>
+    <script src="./js/quickselect.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
