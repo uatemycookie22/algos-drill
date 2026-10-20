@@ -533,6 +533,18 @@ class TestDijkstra:
         assert dist[2] == 1, \
             f"dist[2]: direct edge 0→2 (cost 1) beats 0→1→2 (cost 11), got {dist[2]}"
 
+    def test_prioritizes_total_distance_not_last_edge_weight(self):
+        adj = {
+            0: [(1, 18), (4, 21)],
+            1: [(2, 20), (4, 11)],
+            2: [(1, 1), (3, 10)],
+            3: [(2, 2)],
+            4: [(2, 10)],
+        }
+        dist = s.dijkstra(adj, 0, 5)
+        assert dist == [0, 18, 31, 41, 21], \
+            "the heap must prioritize cumulative distance, not the most recent edge weight"
+
     def test_unreachable_is_inf(self):
         adj = {0: [(1, 1)], 1: [], 2: []}
         dist = s.dijkstra(adj, 0, 3)

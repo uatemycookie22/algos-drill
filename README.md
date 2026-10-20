@@ -8,7 +8,7 @@ in your head.
 ## Quick start
 
 ```bash
-git clone https://github.com/uatemycookie/algos-drill.git
+git clone https://github.com/uatemycookie22/algos-drill.git
 cd algos-drill
 
 python3 -m venv .venv
@@ -80,3 +80,15 @@ python3 reset.py
 ```
 
 Personal archives and progress are ignored by Git and are not published.
+
+## Interactive lessons
+
+The browser-based learning lab currently includes an interactive Quickselect
+lesson and is structured to grow with the rest of the curriculum.
+
+```bash
+open learning/index.html
+```
+
+Or run `python3 -m http.server 8000 --directory learning` and open
+`http://localhost:8000`. The site has no frontend dependencies or build step.
